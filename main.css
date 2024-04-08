@@ -23,6 +23,10 @@ body {
   margin: 0px;
 } */
 
+.boldFont {
+  font-family: AvantGardeBold;
+}
+
 .light-top-gradient {
   background: linear-gradient(180deg, #e9f7ff 0, #fff 100%);
   line-height: 40px;
