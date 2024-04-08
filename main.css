@@ -1,0 +1,173 @@
+:root {
+  --game-scale: 1.5;
+}
+
+@font-face {
+  font-family: "AvantGardeRegular";
+  src: url(fonts/AvantGarde_regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "AvantGardeBold";
+  src: url(fonts/AvantGarde_bold.ttf) format("truetype");
+}
+
+body {
+  text-align: center;
+  background-color: #fff;
+  color: #032d60;
+}
+
+/* #body {
+  display: flex;
+  margin: 0px;
+} */
+
+.light-top-gradient {
+  background: linear-gradient(180deg, #e9f7ff 0, #fff 100%);
+  line-height: 40px;
+}
+
+.titleContainer {
+  font-family: AvantGardeBold;
+  font-size: 40px;
+  padding-top: 20px;
+}
+
+/* GAME BOARD STYLES */
+#gameContainer {
+  /*
+	width and height of .gameBoardPixel should 1/40 of the width and height of #gameContainer,
+	because it is used in calculation in the jscript.js file
+	*/
+  width: calc(30vw * var(--game-scale));
+  height: calc(30vw * var(--game-scale));
+  margin: 1vw auto;
+  background-color: #fff;
+  border: solid 5px #032d60;
+  border-radius: 10px;
+  -webkit-box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 10px 5px rgba(0, 0, 0, 0.3);
+}
+
+.gameBoardPixel {
+  /* background-color: slategrey; */
+  /*
+	width and height of .gameBoardPixel should 1/40 of the width and height of #gameContainer,
+	because it is used in calculation in the jscript.js file
+	*/
+  width: calc(1vw * var(--game-scale));
+  height: calc(1vw * var(--game-scale));
+  /* border-radius: 10px; */
+  float: left;
+}
+/* GAME BOARD STYLES END*/
+
+/* SNAKE STYLES */
+.snakeBodyPixel {
+  background-image: url("images/mule_icon.svg");
+  background-size: contain;
+  /* background-color: #fd6401; */
+  box-shadow: 0 0 5px #e9f7ff;
+}
+/* SNAKE STYLES END*/
+
+/* FOOD STYLES */
+.food {
+  background-image: url("images/sap.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  /* background-color: #68e768; */
+}
+/* FOOD STYLES END*/
+
+/* SCORE STYLES */
+#scoreContainer {
+  width: 40vw;
+  display: flex;
+  margin: auto;
+  justify-content: space-around;
+}
+
+.scoreBoard {
+  border-radius: 10px;
+  border: solid 5px #032d60;
+  color: #0c1021;
+  background-color: #fff;
+  display: inline-block;
+  /* padding: 1vw; */
+  width: 30%;
+  font-family: AvantGardeBold;
+  -webkit-box-shadow: 0px 5px 5px 3px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 5px 5px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 5px 5px 3px rgba(0, 0, 0, 0.3);
+}
+/* SCORE STYLES END */
+
+/* Hide #onScreenControllers on desktop */
+#onScreenControllers {
+  display: none;
+}
+
+.developerDetails {
+  margin-top: 2vw;
+  display: flex;
+  flex-direction: column;
+  color: #0c1021;
+  font-family: AvantGardeRegular;
+}
+
+.developerDetails a {
+  color: #0c1021;
+}
+
+
+/* MOBILE */
+/* @media only screen and (max-width: 768px) {
+  #gameContainer {
+    width: 80vw;
+    height: 80vw;
+  }
+
+  .gameBoardPixel {
+    width: 2vw;
+    height: 2vw;
+  }
+
+  #scoreContainer {
+    width: 80vw;
+  }
+
+  #onScreenControllers {
+    width: 80vw;
+    margin: 5vw auto;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  #onScreenControllers > div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #onScreenControllers button {
+    background-color: transparent;
+    height: 20vw;
+    width: 20vw;
+    font-size: 10vw;
+    border: none;
+  }
+
+  #onScreenControllers button:focus {
+    outline: none;
+  }
+
+  #onScreenControllers button:active {
+    background-color: slategray;
+  }
+}
+*/

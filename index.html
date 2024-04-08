@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Mule Snake</title>
+    <!-- Link our styles from main.css -->
+    <link rel="stylesheet" type="text/css" href="main.css"/>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
+  </head>
+  <body class="light-top-gradient">
+    <div class="titleContainer">Mule Snake</div>
+    <!-- #gameContainer is the main game board-->
+    <!-- <div class="gameSectionScaled"> -->
+      <div id="gameContainer"></div>
+    <!-- </div> -->
+
+    <!-- #scoreContainer contains the scores  -->
+    <div id="scoreContainer">
+      <div class="scoreBoard">Legacy replaced: <span id="pointsEarned">0</span></div>
+      <div class="scoreBoard">Time units: <span id="blocksTravelled">0</span></div>
+    </div>
+
+    <!-- #onScreenControllers contains the navigation buttons for mobile screens -->
+    <div id="onScreenControllers">
+      <button id="leftButton">◀️</button>
+      <div>
+        <button id="upButton">🔼</button>
+        <button id="downButton">🔽</button>
+      </div>
+      <button id="rightButton">▶️</button>
+    </div>
+
+    <div class="developerDetails">
+      <div>
+        Credits to Damian Scherrer & 
+        <a href="https://github.com/RabiRoshan/snake_game" target="_blank">Rabi Roshan.</a>
+      </div>
+    </div>
+  </body>
+
+  <!-- #Load our jscript.js containing the game logic -->
+  <script src="jscript.js"></script>
+</html>
