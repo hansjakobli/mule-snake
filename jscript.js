@@ -56,8 +56,15 @@ const DOWN_DIR = 40;
 
 // Set snake direction initially to right
 let snakeCurrentDirection = RIGHT_DIR;
+let snakeHasMoved = true;
 
 const changeDirection = (newDirectionCode) => {
+  // This is to cover a race condition where the snake would make a 180 degree turn
+  // without moving therefore biting it's tail
+  if (!snakeHasMoved) {
+    return
+  }
+
   // Change the direction of the snake
   if (newDirectionCode == snakeCurrentDirection) return;
 
@@ -65,14 +72,12 @@ const changeDirection = (newDirectionCode) => {
     snakeCurrentDirection = newDirectionCode;
   } else if (newDirectionCode == UP_DIR && snakeCurrentDirection != DOWN_DIR) {
     snakeCurrentDirection = newDirectionCode;
-  } else if (
-    newDirectionCode == RIGHT_DIR &&
-    snakeCurrentDirection != LEFT_DIR
-  ) {
+  } else if (newDirectionCode == RIGHT_DIR && snakeCurrentDirection != LEFT_DIR ) {
     snakeCurrentDirection = newDirectionCode;
   } else if (newDirectionCode == DOWN_DIR && snakeCurrentDirection != UP_DIR) {
     snakeCurrentDirection = newDirectionCode;
   }
+  snakeHasMoved = false
 };
 
 // Let the starting position of the snake be at the middle of game board
@@ -158,6 +163,7 @@ const moveSnake = () => {
     snakeLength = snakeLength + 100;
     createFood();
   }
+  snakeHasMoved = true
 };
 
 /// CALL THE FOLLOWING FUNCTIONS TO RUN THE GAME:
