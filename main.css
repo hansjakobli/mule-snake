@@ -1,5 +1,5 @@
 :root {
-  --game-scale: 1.5;
+  --game-scale: 2;
 }
 
 @font-face {
@@ -44,8 +44,8 @@ body {
 	width and height of .gameBoardPixel should 1/40 of the width and height of #gameContainer,
 	because it is used in calculation in the jscript.js file
 	*/
-  width: calc(30vw * var(--game-scale));
-  height: calc(30vw * var(--game-scale));
+  width: calc(20vw * var(--game-scale));
+  height: calc(20vw * var(--game-scale));
   margin: 1vw auto;
   background-color: #fff;
   border: solid 5px #032d60;
