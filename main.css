@@ -18,10 +18,23 @@ body {
   color: #032d60;
 }
 
-/* #body {
-  display: flex;
-  margin: 0px;
-} */
+.max-img-background{
+  position: absolute;
+  right: -2px;
+  top: 20%;
+  width: 20%;
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  z-index: -1;
+}
+
+.max2-img-background{
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  width: 20%;
+  z-index: -1;
+}
 
 .boldFont {
   font-family: AvantGardeBold;
@@ -34,7 +47,7 @@ body {
 
 .titleContainer {
   font-family: AvantGardeBold;
-  font-size: 40px;
+  font-size: 48px;
   padding-top: 20px;
 }
 
