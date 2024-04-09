@@ -178,7 +178,17 @@ createFood();
 var moveSnakeInterval = setInterval(moveSnake, 100);
 
 // Call change direction function on keyboard key-down event:
-addEventListener("keydown", (e) => changeDirection(e.keyCode));
+addEventListener("keydown", (e) => {
+  changeDirection(e.keyCode);
+
+  // ensure change direction keys don't trigger page scrolling
+  if (e.keyCode == LEFT_DIR ||
+      e.keyCode == RIGHT_DIR ||
+      e.keyCode == UP_DIR ||
+      e.keyCode == DOWN_DIR) {
+        e.preventDefault()
+      }
+});
 
 // ON SCREEN CONTROLLERS:
 const leftButton = document.getElementById("leftButton");
