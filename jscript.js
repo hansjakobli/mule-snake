@@ -1,5 +1,6 @@
 // GAME_PIXEL_COUNT is the pixels on horizontal or vertical axis of the game board (SQUARE).
-const AVAILABLE_FOOD = ['sap','sap', 'boomi', 'wso2', 'axway', 'informatica', 'tibco', 'tibco', 'microsoft', 'workato', 'softwareag', 'apigee']
+const AVAILABLE_FOOD = ['sap','sap', 'tibco', 'tibco', 'boomi', 'wso2', 'axway', 'informatica', 'microsoft', 'workato', 'softwareag', 'apigee']
+const AVAILABLE_FOOD_UNIQUE = Array.from(new Set(AVAILABLE_FOOD))
 const GAME_PIXEL_COUNT = 20;
 const SQUARE_OF_GAME_PIXEL_COUNT = Math.pow(GAME_PIXEL_COUNT, 2);
 
@@ -26,6 +27,7 @@ let currentFoodPostion = 0;
 const createFood = () => {
   // Remove previous food;
   gameBoardPixels[currentFoodPostion].classList.remove("food");
+  gameBoardPixels[currentFoodPostion].removeAttribute("id");
   gameBoardPixels[currentFoodPostion].style.backgroundImage = null
   
   // Create new food
@@ -43,6 +45,7 @@ const createFood = () => {
 
   let newFood = AVAILABLE_FOOD[Math.floor(Math.random()*AVAILABLE_FOOD.length)];
   gameBoardPixels[currentFoodPostion].style.backgroundImage = "url('images/food/".concat(newFood).concat(".png')");
+  gameBoardPixels[currentFoodPostion].setAttribute('id', 'food')
   gameBoardPixels[currentFoodPostion].classList.add("food");
 };
 
@@ -154,6 +157,7 @@ const moveSnake = () => {
   document.getElementById("blocksTravelled").innerHTML = totalDistanceTravelled;
 
   if (currentSnakeHeadPosition == currentFoodPostion) {
+    updateFoodTable()
     // Update total food eaten
     totalFoodEaten++;
     // Update in UI:
@@ -166,10 +170,42 @@ const moveSnake = () => {
   snakeHasMoved = true
 };
 
+const createFoodTable = () => {
+  let foodTable = document.getElementById("foodTable");
+  AVAILABLE_FOOD_UNIQUE.forEach(element => {
+    let row = foodTable.insertRow(-1);
+    let c = row.insertCell(0);
+    var img = document.createElement('img');
+    img.setAttribute('id', element)
+    img.src = "images/food/".concat(element).concat(".png");
+    img.classList.add("foodTableElement")
+    c.appendChild(img);
+  });
+}
+
+const updateFoodTable = () => {
+  let foodTypeEaten = gameBoardPixels[currentFoodPostion].style.backgroundImage.split('/').slice(-1);
+  foodTypeEaten= foodTypeEaten[0].split('.')[0];
+  let tableElement = document.getElementById(foodTypeEaten);
+  tableElement.classList.add("eatenFood");
+
+  let allFoodtypesEaten = true
+  for (let el of document.getElementsByClassName('foodTableElement')) {
+    if (!el.classList.contains('eatenFood')){
+      allFoodtypesEaten = false;
+      break;
+    }
+  }
+  if (allFoodtypesEaten) {
+    document.body.classList.replace('light-top-gradient', 'topscorer-top-gradient');
+  }
+}
+
 /// CALL THE FOLLOWING FUNCTIONS TO RUN THE GAME:
 
 // Create game board pixels:
 createGameBoardPixels();
+createFoodTable();
 
 // Create initial food:
 createFood();
