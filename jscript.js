@@ -139,7 +139,7 @@ const moveSnake = () => {
     clearInterval(moveSnakeInterval);
     if (
       !alert(
-        `You have replaced ${totalFoodEaten} legacy connections after ${totalDistanceTravelled} time units.`
+        `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
       )
     )
       window.location.reload();
@@ -209,6 +209,12 @@ createFoodTable();
 
 // Create initial food:
 createFood();
+
+// Start timer
+if (urlParams.has('timer')) {
+	update()
+}
+
 
 // Move snake:
 var moveSnakeInterval = setInterval(moveSnake, 100);

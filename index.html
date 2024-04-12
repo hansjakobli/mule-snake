@@ -7,6 +7,7 @@
     <title>Mule Snake</title>
     <!-- Link our styles from main.css -->
     <link rel="stylesheet" type="text/css" href="main.css"/>
+    <link rel="stylesheet" type="text/css" href="countdown.css"/>
     <link rel="icon" type="image/png" href="/images/favicon.png">
   </head>
   <body class="light-top-gradient">
@@ -14,11 +15,13 @@
     <img src="images/max2.webp" alt="Happy Max the Mule" class="max2-img-background">
     <div class="titleContainer">Max the Mule's Breakfast</div>
     <!-- #gameContainer is the main game board-->
-    <!-- <div class="gameAndFoodTableContainer"> -->
+    <div class="mainContainer">
+      <div id="timer" class="timer hide-timer"></div>
       <div id="gameContainer">
         <table id="foodTable"></table>
+
       </div>
-    <!-- </div> -->
+    </div>
 
     <!-- #scoreContainer contains the scores  -->
     <div id="scoreContainer">
@@ -46,5 +49,7 @@
   </body>
 
   <!-- #Load our jscript.js containing the game logic -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+  <script src="countdown.js"></script>
   <script src="jscript.js"></script>
 </html>

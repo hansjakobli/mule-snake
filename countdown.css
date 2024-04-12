@@ -1,0 +1,33 @@
+.timer {
+	margin-top: -80px;
+	margin-left: -60px;
+	width: 200px;
+	position: absolute;
+}
+
+.path--background {
+	fill: #032d60;
+	stroke: #fff;
+	stroke-width: 0px;
+}
+
+.pulse {
+	fill: #ff0000ff !important;
+}
+
+.path--foreground {
+	fill: #fff;
+	stroke: #fff;
+	stroke-width: 2px;
+}
+
+.label {
+	font-family: AvantGardeBold;
+	font-size: 60px;
+	text-anchor: middle;
+	fill: #032d60;
+}
+
+.hide-timer {
+	visibility: hidden;
+}
