@@ -86,7 +86,7 @@ body {
   background-image: url("images/mule_icon.svg");
   background-size: contain;
   /* background-color: #fd6401; */
-  box-shadow: 0 0 5px #e9f7ff;
+  filter: drop-shadow(0px 0px 3px #e9f7ff);
 }
 /* SNAKE STYLES END*/
 
