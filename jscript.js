@@ -154,7 +154,7 @@ const moveSnake = () => {
   // Update total distance travelled
   totalDistanceTravelled++;
   // Update in UI:
-  document.getElementById("blocksTravelled").innerHTML = totalDistanceTravelled;
+  document.getElementById("blocksTravelled").innerHTML = Number(totalDistanceTravelled/10).toFixed(1);
 
   if (currentSnakeHeadPosition == currentFoodPostion) {
     updateFoodTable()
