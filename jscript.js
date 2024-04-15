@@ -1,5 +1,5 @@
 // GAME_PIXEL_COUNT is the pixels on horizontal or vertical axis of the game board (SQUARE).
-const AVAILABLE_FOOD = ['sap','sap', 'tibco', 'tibco', 'boomi', 'wso2', 'axway', 'informatica', 'microsoft', 'workato', 'softwareag', 'apigee']
+const AVAILABLE_FOOD = ['sap','sap', 'tibco', 'tibco', 'boomi', 'wso2', 'axway', 'microsoft', 'workato', 'softwareag', 'apigee']
 const AVAILABLE_FOOD_UNIQUE = Array.from(new Set(AVAILABLE_FOOD))
 const GAME_PIXEL_COUNT = 20;
 const SQUARE_OF_GAME_PIXEL_COUNT = Math.pow(GAME_PIXEL_COUNT, 2);
