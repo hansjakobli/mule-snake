@@ -6,6 +6,7 @@ const SQUARE_OF_GAME_PIXEL_COUNT = Math.pow(GAME_PIXEL_COUNT, 2);
 
 let totalFoodEaten = 0;
 let totalDistanceTravelled = 0;
+let timeout = null
 
 /// THE GAME BOARD:
 const gameContainer = document.getElementById("gameContainer");
@@ -137,12 +138,17 @@ const moveSnake = () => {
   if (nextSnakeHeadPixel.classList.contains("snakeBodyPixel")) {
     // Stop moving the snake
     clearInterval(moveSnakeInterval);
-    if (
-      !alert(
-        `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
-      )
-    )
-      window.location.reload();
+    clearTimeout(timeout)
+    gameOverHeader.textContent = "Oh bummer... you bit your tail!"
+    gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
+    dialog.showModal();
+    // if (
+    //   dialog.showModal();
+    //   !alert(
+    //     `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
+    //   )
+    // )
+      // window.location.reload();
   }
 
   nextSnakeHeadPixel.classList.add("snakeBodyPixel");
@@ -210,9 +216,20 @@ createFoodTable();
 // Create initial food:
 createFood();
 
+const timerExpired = () => {
+  clearInterval(moveSnakeInterval);
+  gameOverHeader.textContent = "Time's up, well done!"
+  gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${timer} seconds.`
+  dialog.showModal();
+}
+
 // Start timer
+var timer
 if (urlParams.has('timer')) {
-	update()
+	document.getElementById("timer").classList.remove('hide-timer');
+  timer = urlParams.get('timer')
+	update() // defined in countdown.js
+  timeout = setTimeout(timerExpired, timer*1000 + 100) // give 100ms more
 }
 
 
@@ -233,12 +250,34 @@ addEventListener("keydown", (e) => {
 });
 
 // ON SCREEN CONTROLLERS:
-const leftButton = document.getElementById("leftButton");
-const rightButton = document.getElementById("rightButton");
-const upButton = document.getElementById("upButton");
-const downButton = document.getElementById("downButton");
+// const leftButton = document.getElementById("leftButton");
+// const rightButton = document.getElementById("rightButton");
+// const upButton = document.getElementById("upButton");
+// const downButton = document.getElementById("downButton");
 
-leftButton.onclick = () => changeDirection(LEFT_DIR);
-rightButton.onclick = () => changeDirection(RIGHT_DIR);
-upButton.onclick = () => changeDirection(UP_DIR);
-downButton.onclick = () => changeDirection(DOWN_DIR);
+// leftButton.onclick = () => changeDirection(LEFT_DIR);
+// rightButton.onclick = () => changeDirection(RIGHT_DIR);
+// upButton.onclick = () => changeDirection(UP_DIR);
+// downButton.onclick = () => changeDirection(DOWN_DIR);
+
+
+const openButton = document.querySelector("#openButton");
+const restartButton = document.querySelector("#restartButton");
+const dialog = document.querySelector("dialog");
+const gameOverHeader = document.querySelector("#gameOverHeader");
+const gameOverText = document.querySelector("#gameOverText");
+
+// openButton.addEventListener("click", () => {
+//     dialog.showModal();
+// });
+
+restartButton.addEventListener("click", () => {
+    // dialog.hideModal();
+    window.location.reload();
+});
+
+// dialog.addEventListener("click", ({ target: dialog }) => {
+//     if (dialog.nodeName === "DIALOG") {
+//         dialog.close("dismiss");
+//     }
+// });

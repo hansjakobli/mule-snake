@@ -1,8 +1,9 @@
 const urlParams = new URLSearchParams(window.location.search);
+var timeLimit = 1
 if (urlParams.has('timer')) {
 	document.getElementById("timer").classList.remove('hide-timer')
+  timeLimit = urlParams.get('timer')
 }
-var timeLimit = urlParams.get('timer')
 
 var width = 350,
   height = 350,

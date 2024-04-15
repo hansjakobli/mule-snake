@@ -182,6 +182,77 @@ body {
   color: #0c1021;
 }
 
+button:focus {
+  outline: solid 2px lightblue;
+  border-radius: 2px;
+}
+
+dialog {
+  display: block;
+  font-family: AvantGardeRegular;
+  inset: 0;
+  z-index: var(--layer-important);
+  max-inline-size: min(90vw, var(--size-content-3));
+  max-block-size: min(80vh, 100%);
+  overflow: hidden;
+  transition: opacity .5s;
+  animation: var(--animation-scale-down) forwards;
+  animation-timing-function: var(--ease-squish-3);
+  border-radius: 0.5rem;
+  padding: 0;
+  border: 0;
+  box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 0.5);
+}
+
+dialog[open] {
+  animation: var(--animation-slide-in-up) forwards;
+}
+
+dialog:not([open]) {
+  pointer-events: none;
+  opacity: 0;
+}
+
+dialog::backdrop {
+backdrop-filter: blur(0.25rem);
+}
+
+dialog article {
+  padding: 0 2rem;
+}
+
+dialog header {
+  font-family: AvantGardeBold;
+  color: #fff;
+  margin: 0;
+  background-color: #032d60;
+  padding: 1rem 2rem;
+}
+
+dialog footer {
+  display: flex;
+  justify-content: center;
+  padding: 1rem 2rem;
+}
+
+dialog header h3 {
+  margin: 0;
+}
+
+button {
+  background-color: #032d60; /* Green */
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  padding: 15px;
+  padding-bottom: 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-family: AvantGardeBold;
+  font-size: 16px;
+}
+
 
 /* MOBILE */
 /* @media only screen and (max-width: 768px) {
