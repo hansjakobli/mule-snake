@@ -7,6 +7,19 @@ const SQUARE_OF_GAME_PIXEL_COUNT = Math.pow(GAME_PIXEL_COUNT, 2);
 let totalFoodEaten = 0;
 let totalDistanceTravelled = 0;
 let timeout = null
+timeLimit = 0
+
+if (urlParams.has('event') && urlParams.has('timer')) {
+  console.warn("Warning, specifying a timer and event has no effect. The timer is defined by the event-specific leaderboard (same rules for all).")
+}
+
+if (urlParams.has('timer')) {
+  console.warn("Warning, hardcoding a timer disables the leaderboard (same rules for all).")
+}
+
+// const apiUrl = 'https://mule-snake-api-fu1jjb.m3jzw3-2.deu-c1.cloudhub.io/api/leaderboard';
+let apiUrl = 'http://localhost:8081/api/leaderboard';
+let leaderboardItems = []
 
 /// THE GAME BOARD:
 const gameContainer = document.getElementById("gameContainer");
@@ -141,7 +154,7 @@ const moveSnake = () => {
     clearTimeout(timeout)
     gameOverHeader.textContent = "Oh bummer... you bit your tail!"
     gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
-    dialog.showModal();
+    gameOverDialog.showModal();
     // if (
     //   dialog.showModal();
     //   !alert(
@@ -219,22 +232,35 @@ createFood();
 const timerExpired = () => {
   clearInterval(moveSnakeInterval);
   gameOverHeader.textContent = "Time's up, well done!"
-  gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${timer} seconds.`
-  dialog.showModal();
+  gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${timeLimit} seconds.`
+  gameOverDialog.showModal();
 }
 
 // Start timer
-var timer
-if (urlParams.has('timer')) {
-	document.getElementById("timer").classList.remove('hide-timer');
-  timer = urlParams.get('timer')
-	update() // defined in countdown.js
-  timeout = setTimeout(timerExpired, timer*1000 + 100) // give 100ms more
+// var timer
+const startTimer = () => {
+  // if (urlParams.has('timer')) {
+  //   document.getElementById("timer").classList.remove('hide-timer');
+  //   timer = urlParams.get('timer')
+    update() // defined in countdown.js
+    timeout = setTimeout(timerExpired, timeLimit*1000 + 100) // give 100ms more
+  // }
 }
 
 
 // Move snake:
-var moveSnakeInterval = setInterval(moveSnake, 100);
+var moveSnakeInterval = null
+const startGame = () => {
+  setInterval(moveSnake, 100);
+  if (timeLimit > 0) {
+    // console.log("starting timer ", timeLimit)
+    document.getElementById("timer").classList.remove('hide-timer')
+    startTimer()
+  } else {
+    document.getElementById("timer").classList.add('hide-timer')
+  }
+}
+
 
 // Call change direction function on keyboard key-down event:
 addEventListener("keydown", (e) => {
@@ -263,7 +289,9 @@ addEventListener("keydown", (e) => {
 
 const openButton = document.querySelector("#openButton");
 const restartButton = document.querySelector("#restartButton");
-const dialog = document.querySelector("dialog");
+const beginButton = document.querySelector("#beginButton");
+const gameOverDialog = document.querySelector("#gameOverDialog");
+const leaderboardDialog = document.querySelector("#leaderboardDialog");
 const gameOverHeader = document.querySelector("#gameOverHeader");
 const gameOverText = document.querySelector("#gameOverText");
 
@@ -271,11 +299,73 @@ const gameOverText = document.querySelector("#gameOverText");
 //     dialog.showModal();
 // });
 
+
+const createLeaderbaordTable = () => {
+  let foodTable = document.getElementById("leaderboardTable");
+  leaderboardItems.forEach((element, i) => {
+    let row = foodTable.insertRow(-1);
+    let rank = row.insertCell(0);
+    rank.textContent = i+1;
+    rank.style = "font-family: 'AvantGardeBold'; text-align: left;"
+    let nicknameCell = row.insertCell(1);
+    nicknameCell.textContent = element.nickname;
+    nicknameCell.style = "font-family: 'AvantGardeBold'; text-align: left;"
+    let pointsCell = row.insertCell(2);
+    pointsCell.textContent = element.points;
+    pointsCell.style = "font-family: 'AvantGardeBold';"
+    let efficiencyCell = row.insertCell(3);
+    efficiencyCell.textContent = element.efficiency.toFixed(2);
+    let dateCell = row.insertCell(4);
+    dateCell.textContent = element.date;
+  });
+}
+
+if (urlParams.has('event')) {
+  apiUrl = apiUrl.concat("?event=").concat(urlParams.get('event'))
+}
+console.log(apiUrl)
+if (!urlParams.has('timer')){
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) {
+        response.text().then( text => console.error(text))
+        // throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => {
+      leaderboardItems = data
+      // console.log(leaderboardItems.shift())
+      timeLimit = leaderboardItems.shift().timer
+      if (timeLimit > 0) {
+        fields[0].value = timeLimit
+        fields[0].size = timeLimit
+      }
+      
+      createLeaderbaordTable()
+      leaderboardDialog.showModal()
+    })
+    .catch(error => {
+      console.info("Starting game without a leaderboard");
+      startGame()
+    });
+  } else startGame()
+
 restartButton.addEventListener("click", () => {
     // dialog.hideModal();
     window.location.reload();
 });
 
+restartButton.addEventListener("click", () => {
+  window.location.reload();
+});
+
+beginButton.addEventListener("click", () => {
+  beginButton.disabled = true
+  leaderboardDialog.style = "display: none;"
+  // timeLimit = 0
+  startGame()
+});
 // dialog.addEventListener("click", ({ target: dialog }) => {
 //     if (dialog.nodeName === "DIALOG") {
 //         dialog.close("dismiss");

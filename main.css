@@ -167,9 +167,9 @@ body {
 /* SCORE STYLES END */
 
 /* Hide #onScreenControllers on desktop */
-#onScreenControllers {
+/* #onScreenControllers {
   display: none;
-}
+} */
 
 .developerDetails {
   margin-top: 2vw;
@@ -254,6 +254,11 @@ button {
   font-size: 16px;
 }
 
+#leaderboardTable {
+  padding-top: 16px;
+  width: 500px;
+  text-align: right;
+}
 
 /* MOBILE */
 /* @media only screen and (max-width: 768px) {

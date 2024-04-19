@@ -30,14 +30,14 @@
     </div>
 
     <!-- #onScreenControllers contains the navigation buttons for mobile screens -->
-    <div id="onScreenControllers">
+    <!-- <div id="onScreenControllers">
       <button id="leftButton">◀️</button>
       <div>
         <button id="upButton">🔼</button>
         <button id="downButton">🔽</button>
       </div>
       <button id="rightButton">▶️</button>
-    </div>
+    </div> -->
 
     <div class="developerDetails">
       <div>
@@ -47,19 +47,42 @@
       </div>
     </div>
 
-    <dialog>
+    <dialog id="gameOverDialog">
       <form method="dialog">
           <header>
-              <h3 id="gameOverHeader">Default header</h3>
+            <h3 id="gameOverHeader">Default header</h3>
           </header>
           <article>
-              <p id="gameOverText">Default body</p>
+            <p id="gameOverText">Default body</p>
           </article>
           <footer>
-              <button class="button" id="restartButton">Restart</button>
+            <button class="button" id="restartButton">Restart</button>
           </footer>
       </form>
     </dialog>
+
+    <dialog id="leaderboardDialog">
+      <form method="dialog">
+          <header>
+            <h3 id="gameOverHeader">Topscorers to beat</h3>
+          </header>
+          <article>
+            <table id="leaderboardTable">
+              <tr>
+                <td></td>
+                <td></td>
+                <td>Score</td>
+                <td>Efficiency</td>
+                <td>Date (UTC)</td>
+              </tr>
+            </table>
+          </article>
+          <footer>
+            <button class="button" id="beginButton">Press any key to start</button>
+          </footer>
+      </form>
+    </dialog>
+
   </body>
 
   <!-- #Load our jscript.js containing the game logic -->
