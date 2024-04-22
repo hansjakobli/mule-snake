@@ -54,6 +54,13 @@
           </header>
           <article>
             <p id="gameOverText">Default body</p>
+            <div id="joinLeaderboard">
+              <p class="joinLeaderboardText">Submit your result to the leaderbaord</p>
+              <input type="text" id="nicknameInput" required minlength="4" maxlength="16" placeholder="Name">
+              <input type="text" id="emailInput" required minlength="4" maxlength="64" placeholder="Email (hidden from leaderbaord)">
+              <button class="button" id="submitButton">Submit</button>
+              <p style="display: none;" id="errorLeaderboardText">Placeholder</p>
+            </div>
           </article>
           <footer>
             <button class="button" id="restartButton">Restart</button>
@@ -78,7 +85,7 @@
             </table>
           </article>
           <footer>
-            <button class="button" id="beginButton">Press any key to start</button>
+            <button class="button" id="beginButton">Press 'Enter' to start</button>
           </footer>
       </form>
     </dialog>

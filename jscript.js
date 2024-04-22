@@ -17,8 +17,11 @@ if (urlParams.has('timer')) {
   console.warn("Warning, hardcoding a timer disables the leaderboard (same rules for all).")
 }
 
-// const apiUrl = 'https://mule-snake-api-fu1jjb.m3jzw3-2.deu-c1.cloudhub.io/api/leaderboard';
-let apiUrl = 'http://localhost:8081/api/leaderboard';
+let apiUrl = 'https://mule-snake-api-fu1jjb.m3jzw3-2.deu-c1.cloudhub.io/api/leaderboard';
+// let apiUrl = 'http://localhost:8081/api/leaderboard';
+if (urlParams.has('event')) {
+  apiUrl = apiUrl.concat("?event=").concat(urlParams.get('event'))
+}
 let leaderboardItems = []
 
 /// THE GAME BOARD:
@@ -154,14 +157,11 @@ const moveSnake = () => {
     clearTimeout(timeout)
     gameOverHeader.textContent = "Oh bummer... you bit your tail!"
     gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
+    if (urlParams.has('timer')) {
+      // if timer defined in query param, then disable deaderboard
+      document.querySelector("#joinLeaderboard").style.display = "none";
+    }
     gameOverDialog.showModal();
-    // if (
-    //   dialog.showModal();
-    //   !alert(
-    //     `You have replaced ${totalFoodEaten} legacy connections after ${Number(totalDistanceTravelled/10).toFixed(1)} seconds.`
-    //   )
-    // )
-      // window.location.reload();
   }
 
   nextSnakeHeadPixel.classList.add("snakeBodyPixel");
@@ -233,15 +233,16 @@ const timerExpired = () => {
   clearInterval(moveSnakeInterval);
   gameOverHeader.textContent = "Time's up, well done!"
   gameOverText.textContent = `You have replaced ${totalFoodEaten} legacy connections after ${timeLimit} seconds.`
+  if (urlParams.has('timer')) {
+    // if timer defined in query param, then disable deaderboard
+    document.querySelector("#joinLeaderboard").style.display = "none";
+  }
   gameOverDialog.showModal();
 }
 
 // Start timer
 // var timer
 const startTimer = () => {
-  // if (urlParams.has('timer')) {
-  //   document.getElementById("timer").classList.remove('hide-timer');
-  //   timer = urlParams.get('timer')
     update() // defined in countdown.js
     timeout = setTimeout(timerExpired, timeLimit*1000 + 100) // give 100ms more
   // }
@@ -251,7 +252,7 @@ const startTimer = () => {
 // Move snake:
 var moveSnakeInterval = null
 const startGame = () => {
-  setInterval(moveSnake, 100);
+  moveSnakeInterval = setInterval(moveSnake, 100);
   if (timeLimit > 0) {
     // console.log("starting timer ", timeLimit)
     document.getElementById("timer").classList.remove('hide-timer')
@@ -289,15 +290,13 @@ addEventListener("keydown", (e) => {
 
 const openButton = document.querySelector("#openButton");
 const restartButton = document.querySelector("#restartButton");
+const submitButton = document.querySelector("#submitButton");
+const errorLeaderboardText = document.querySelector("#errorLeaderboardText");
 const beginButton = document.querySelector("#beginButton");
 const gameOverDialog = document.querySelector("#gameOverDialog");
 const leaderboardDialog = document.querySelector("#leaderboardDialog");
 const gameOverHeader = document.querySelector("#gameOverHeader");
 const gameOverText = document.querySelector("#gameOverText");
-
-// openButton.addEventListener("click", () => {
-//     dialog.showModal();
-// });
 
 
 const createLeaderbaordTable = () => {
@@ -320,10 +319,7 @@ const createLeaderbaordTable = () => {
   });
 }
 
-if (urlParams.has('event')) {
-  apiUrl = apiUrl.concat("?event=").concat(urlParams.get('event'))
-}
-console.log(apiUrl)
+
 if (!urlParams.has('timer')){
   fetch(apiUrl)
     .then(response => {
@@ -349,10 +345,55 @@ if (!urlParams.has('timer')){
       console.info("Starting game without a leaderboard");
       startGame()
     });
-  } else startGame()
+  } else {
+    let t = urlParams.get('timer')
+    if (!Number.isNaN(t)) {
+      timeLimit = t
+    } else console.log(typeof t)
+    startGame()
+  }
+
+  submitButton.addEventListener("click", (clickEvent) => {
+  let name = document.getElementById("nicknameInput").value;
+  let email = document.getElementById("emailInput").value;
+  fetch(apiUrl, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json; charset=UTF-8"
+    },
+    body: JSON.stringify({
+        nickname: name,
+        email: email,
+        points: totalFoodEaten,
+        duration_s: totalDistanceTravelled/10
+    })
+  })
+    .then(response => {
+      if (!response.ok) {
+        response.text().then( text => console.error(text))
+        if (response.status = 400) {
+          errorLeaderboardText.textContent = "Invalid input - Allowed are alphanumeric Names with an email address."
+          errorLeaderboardText.style.display = "inherit"
+        }
+        // throw new Error('Network response was not ok');
+      } else {
+        submitButton.innerHTML = '<span style="color: green">&#10003;</span>' // checkmark
+        submitButton.disabled = true
+        errorLeaderboardText.style.display = "none"
+        restartButton.focus()
+      }
+    })
+    .then(data => {
+
+    })
+    .catch(error => {
+      console.info("Error when submitting score to leaderboard");
+    });
+    clickEvent.preventDefault()
+});
+
 
 restartButton.addEventListener("click", () => {
-    // dialog.hideModal();
     window.location.reload();
 });
 
@@ -366,8 +407,4 @@ beginButton.addEventListener("click", () => {
   // timeLimit = 0
   startGame()
 });
-// dialog.addEventListener("click", ({ target: dialog }) => {
-//     if (dialog.nodeName === "DIALOG") {
-//         dialog.close("dismiss");
-//     }
-// });
+
