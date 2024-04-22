@@ -6,6 +6,9 @@ Rebuild code from RabiRoshan (https://github.com/RabiRoshan/snake_game) with my 
 ## How to play
 Visit this page https://mule-snake.com/. Use the arrow keys to control the snake.
 
+## Topscorers
+Players who collect all unique logos will be awarded with a yellow background.
+
 ## Options
 Note: You cannot specify both `event` and `timer` at the same time.
 
